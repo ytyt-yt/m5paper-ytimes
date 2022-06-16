@@ -12,6 +12,7 @@ The sever is built with AWS SAM.
 Install/Config SAM: [Getting started with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started.html)
 
 Go to `aws` directory and install dependencies:
+
 ```
 $ cd aws
 $ npm install
@@ -27,16 +28,30 @@ Parameters:
 
 * `AppBucketName`: the UNIQUE S3 bucket name to serve the web application.
 * `UpdateSchedule`: the schedule to update data, in [AWS CloundWatch Events Schedule Expression](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html) format. Default: Every 30min.
-* `Timezone`: Client Timezone ([TZ database Name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)).
 * `Latitude`: Client Latitude
 * `Longitude`: Client Longitude
 
 The server url will be `http://<AppBucketName>.s3-website-<AWS_REGION>.amazonaws.com`
 
 ### Build Frontend
+
+Go to `web` directory and install dependencies:
+
 ```
-$ cd ../web/
+$ cd web
 $ npm install
+$ cp .env.local.example .env.local
+```
+
+Edit `.env.local`:
+
+* `VUE_APP_OWM_APPID`: Your [Openweather API](https://openweathermap.org/appid) key.
+* `VUE_APP_LAT`: Default Latitude (can be overrided by SAM settings).
+* `VUE_APP_LON`: Default Longitude (can be overrided by SAM settings).
+
+Build Frontend:
+
+```
 $ npm build
 ```
 
