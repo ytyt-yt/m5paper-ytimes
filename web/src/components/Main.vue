@@ -122,6 +122,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  @font-face {
+    font-family: 'Iosevka Term SS15';
+    src: url('https://raw.githubusercontent.com/ytyt-yt/m5paper-ytimes/master/arduino/ytimes/data/iosevka-fixed-ss15-medium.ttf') format('truetype');
+  }
   .main {
     width: 540px;
     height: 960px;
