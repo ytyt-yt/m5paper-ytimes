@@ -7,11 +7,10 @@ const s3 = new AWS.S3();
 const bucketName = process.env.BUCKET_NAME;
 const region = process.env.AWS_REGION;
 
-const tz = process.env.CLIENT_TZ;
 const lat = process.env.CLIENT_LAT;
 const lon = process.env.CLIENT_LON;
 
-async function getScreenShot(tz, lat, lon) {
+async function getScreenShot(lat, lon) {
   let browser = null;
 
   browser = await chromium.puppeteer.launch({
@@ -27,7 +26,6 @@ async function getScreenShot(tz, lat, lon) {
     width: 540,
     height: 960,
   });
-  await page.emulateTimezone(tz);
 
   await page.goto(
     `http://${bucketName}.s3-website-${region}.amazonaws.com/?lat=${lat}&lon=${lon}`, {
@@ -94,5 +92,5 @@ async function getUpdate() {
 
 exports.yTimesUpdateHandler = async (event, context) => {
   await getUpdate();
-  await getScreenShot(tz, lat, lon);
+  await getScreenShot(lat, lon);
 };

@@ -11,10 +11,6 @@ Parameters:
     Type: String
     Default: "cron(*/30 * * * ? *)"
     Description: "Update Schedule (in AWS CloudWatch Events Schedule Expression format)"
-  Timezone:
-    Type: String
-    Default: America/Los_Angeles
-    Description: "Client Timezone"
   Latitude:
     Type: String
     Default: 34.052235
@@ -40,7 +36,6 @@ Resources:
       Environment:
         Variables:
           BUCKET_NAME: !Ref AppBucketName
-          CLIENT_TZ: !Ref Timezone
           CLIENT_LAT: !Ref Latitude
           CLIENT_LON: !Ref Longitude
       Events:
