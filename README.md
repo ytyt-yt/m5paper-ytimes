@@ -1,6 +1,8 @@
-# YTimes
+# M5Paper YTimes
 
 E-Ink newspaper on M5Paper
+
+<img src="https://user-images.githubusercontent.com/20288519/173987835-26802f21-4564-40ff-82b6-fc4c7d1589a0.jpg" width="300">
 
 
 ## Sever setup
