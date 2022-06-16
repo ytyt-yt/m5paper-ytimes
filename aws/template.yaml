@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  ytimes
+
+Parameters:
+  AppBucketName:
+    Type: String
+    Description: "REQUIRED: Unique S3 bucket name to use for the app."
+  UpdateSchedule:
+    Type: String
+    Default: "cron(*/30 * * * ? *)"
+    Description: "Update Schedule (in AWS CloudWatch Events Schedule Expression format)"
+  Timezone:
+    Type: String
+    Default: America/Los_Angeles
+    Description: "Client Timezone"
+  Latitude:
+    Type: String
+    Default: 34.052235
+    Description: "Client Latitude (for weather)"
+  Longitude:
+    Type: String
+    Default: -118.243683
+    Description: "Client Longitude (for weather)"
+
+Resources:
+  YTimesUpdateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/ytimes-update.yTimesUpdateHandler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      MemorySize: 1024
+      Timeout: 60
+      Policies:
+        S3WritePolicy:
+          BucketName: !Ref AppBucketName
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref AppBucketName
+          CLIENT_TZ: !Ref Timezone
+          CLIENT_LAT: !Ref Latitude
+          CLIENT_LON: !Ref Longitude
+      Events:
+        UpdateCloudWatchEvent:
+          Type: Schedule
+          Properties:
+            Schedule: !Ref UpdateSchedule
+
+  AppBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref AppBucketName
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
